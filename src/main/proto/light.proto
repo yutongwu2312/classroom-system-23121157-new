@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package light;
+
+option java_multiple_files = false;
+option java_package = "com.classroomsystem";
+option java_outer_classname = "LightProto";
+
+message LightStatus {
+  string name = 1;      // 灯的名称
+  bool is_on = 2;       // 灯的开关状态，true 表示开启，false 表示关闭
+}
+
+service LightService {
+  // 获取灯的状态
+  rpc GetStatus(LightStatus) returns (LightStatus) {}
+
+  // 控制灯的开关
+  rpc Toggle(LightStatus) returns (LightStatus) {}
+}

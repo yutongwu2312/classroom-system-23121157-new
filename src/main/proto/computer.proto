@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package computer;
+
+option java_multiple_files = false;
+option java_package = "com.classroomsystem";
+option java_outer_classname = "ComputerProto";
+
+message ComputerStatus {
+  string name = 1;      // 电脑的名称
+  bool is_on = 2;       // 电脑的开关状态，true 表示开启，false 表示关闭
+}
+
+service ComputerService {
+  // 获取电脑的状态
+  rpc GetStatus(ComputerStatus) returns (ComputerStatus) {}
+
+  // 控制电脑的开关
+  rpc Toggle(ComputerStatus) returns (ComputerStatus) {}
+}

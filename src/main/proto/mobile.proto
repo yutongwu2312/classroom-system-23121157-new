@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package mobileapp;
+
+import "light.proto";
+import "computer.proto";
+option java_multiple_files = false;
+option java_package = "com.classroomsystem";
+option java_outer_classname = "MobileProto";
+
+service MobileAppService {
+  // 获取灯的状态
+  rpc GetLightStatus(light.LightStatus) returns (light.LightStatus) {}
+
+  // 切换灯的开关状态
+  rpc ToggleLight(light.LightStatus) returns (light.LightStatus) {}
+
+  // 获取电脑的状态
+  rpc GetComputerStatus(computer.ComputerStatus) returns (computer.ComputerStatus) {}
+
+  // 切换电脑的开关状态
+  rpc ToggleComputer(computer.ComputerStatus) returns (computer.ComputerStatus) {}
+}
+
