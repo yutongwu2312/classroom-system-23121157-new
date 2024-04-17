@@ -1,4 +1,4 @@
-package com.classroomsystem.server;
+ package com.classroomsystem.server;
 
 import com.classroomsystem.ComputerProto;
 import com.classroomsystem.ComputerServiceGrpc;
@@ -27,4 +27,10 @@ public class ComputerServiceImpl extends ComputerServiceGrpc.ComputerServiceImpl
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
+
+    public boolean isComputerOn() {
+        return isComputerOn;
+    }
+
+
 }

@@ -28,4 +28,8 @@ public class LightServiceImpl extends LightServiceGrpc.LightServiceImplBase {
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
+
+    public boolean isLightOn() {
+        return isLightOn;
+    }
 }

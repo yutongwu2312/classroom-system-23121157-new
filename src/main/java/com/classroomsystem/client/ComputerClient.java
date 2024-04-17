@@ -37,7 +37,7 @@ public class ComputerClient {
         }
     }
 
-    public void toggleComputer(String name) {
+    public void toggle(String name) {
         ComputerProto.ComputerStatus request = ComputerProto.ComputerStatus.newBuilder()
                 .setName(name)
                 .build();
@@ -55,7 +55,7 @@ public class ComputerClient {
         try {
             String computerName = "Office Computer"; // 你可以根据需要修改计算机的名称
             client.getComputerStatus(computerName);
-            client.toggleComputer(computerName);
+            client.toggle(computerName); // 调用修改后的 toggle 方法
             client.getComputerStatus(computerName);
         } finally {
             client.shutdown();
