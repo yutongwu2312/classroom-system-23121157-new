@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package smart_classroom.control;
+
+option java_multiple_files = false;
+option java_package = "com.classroomsystem";
+option java_outer_classname = "AirConditionProto";
+
+// 空调控制服务的定义，包括开关控制和温度调节。
+service AirConditionerControlService {
+  // 发送请求远程开启或关闭空调。
+  rpc SwitchAirConditioner(SwitchAirConditionerRequest) returns (SwitchAirConditionerResponse);
+  // 发送请求指定具体温度值。
+  rpc SetTemperature(SetTemperatureRequest) returns (SetTemperatureResponse);
+
+  // 客户端流式 RPC：允许客户端发送一系列温度调节请求。
+  rpc StreamTemperatureAdjustments(stream SetTemperatureRequest) returns (StreamTemperatureAdjustmentsResponse) {
+    // 这里的流式请求允许客户端连续发送多个 SetTemperatureRequest 消息。
+    // 服务端可以收集这些请求并进行处理，例如计算平均温度或记录温度变化。
+  }
+}
+
+// 开关空调请求与响应消息。
+message SwitchAirConditionerRequest {
+  bool turn_on = 1; // true 表示开启空调，false 表示关闭空调。
+}
+
+message SwitchAirConditionerResponse {
+  bool success = 1; // 表示操作是否成功完成。
+  string message = 2; // 如果操作失败，提供有关失败原因的详细信息。
+}
+
+// 温度调节请求与响应消息。
+message SetTemperatureRequest {
+  float temperature_celsius = 1; // 请求设定的温度值（摄氏度）。
+}
+
+message SetTemperatureResponse {
+  bool success = 1; // 表示温度调节操作是否成功完成。
+  string message = 2; // 如果操作失败，提供有关失败原因的详细信息。
+}
+
+// 客户端流式温度调整请求的响应消息。
+message StreamTemperatureAdjustmentsResponse {
+  bool success = 1; // 表示一系列温度调节操作是否成功完成。
+  string message = 2; // 如果操作失败，提供有关失败原因的详细信息。
+}
+
