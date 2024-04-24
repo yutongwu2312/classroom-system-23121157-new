@@ -28,17 +28,14 @@ public class AirconditionServiceClient {
                 .setTurnOn(turnOn)
                 .build();
         stub.switchAirConditioner(request, new StreamObserver<AirConditionProto.SwitchAirConditionerResponse>() {
-            @Override
             public void onNext(AirConditionProto.SwitchAirConditionerResponse response) {
                 System.out.println("SwitchAirConditioner response: " + response.getMessage());
             }
 
-            @Override
             public void onError(Throwable t) {
                 System.err.println("Error in switchAirConditioner: " + t.getMessage());
             }
 
-            @Override
             public void onCompleted() {
                 System.out.println("SwitchAirConditioner request completed");
             }
@@ -60,7 +57,6 @@ public class AirconditionServiceClient {
                 System.err.println("Error in setTemperature: " + t.getMessage());
             }
 
-            @Override
             public void onCompleted() {
                 System.out.println("SetTemperature request completed");
             }
@@ -69,17 +65,14 @@ public class AirconditionServiceClient {
 
     public void streamTemperatureAdjustments() {
         StreamObserver<AirConditionProto.SetTemperatureRequest> requestObserver = stub.streamTemperatureAdjustments(new StreamObserver<AirConditionProto.StreamTemperatureAdjustmentsResponse>() {
-            @Override
             public void onNext(AirConditionProto.StreamTemperatureAdjustmentsResponse response) {
                 System.out.println("StreamTemperatureAdjustments response: " + response.getMessage());
             }
 
-            @Override
             public void onError(Throwable t) {
                 System.err.println("Error in streamTemperatureAdjustments: " + t.getMessage());
             }
 
-            @Override
             public void onCompleted() {
                 System.out.println("StreamTemperatureAdjustments request completed");
             }
@@ -116,9 +109,9 @@ public class AirconditionServiceClient {
 
     public static void main(String[] args) {
         AirconditionServiceClient client = new AirconditionServiceClient("localhost", 8082);
-        client.switchAirConditioner(true); // Example: Turn on the air conditioner
-        client.setTemperature(25.5f); // Example: Set the temperature to 25.5 degrees Celsius
-        client.streamTemperatureAdjustments(); // Example: Stream temperature adjustments
-        client.shutdown(); // Shutdown the client
+        client.switchAirConditioner(true);
+        client.setTemperature(25.5f);
+        client.streamTemperatureAdjustments();
+        client.shutdown();
     }
 }

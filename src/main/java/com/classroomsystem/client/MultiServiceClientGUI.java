@@ -9,8 +9,7 @@ import io.grpc.stub.StreamObserver;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.concurrent.*;
+
 
 public class MultiServiceClientGUI extends JFrame {
 
@@ -34,11 +33,10 @@ public class MultiServiceClientGUI extends JFrame {
     private final ManagedChannel lightChannel;
 
     public MultiServiceClientGUI() {
-        setTitle("多服务控制");
+        setTitle("Multiservice control");
         setSize(300, 250);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // 创建通道
         airChannel = ManagedChannelBuilder.forAddress(SERVER_HOST, AIR_CONDITIONER_PORT)
                 .usePlaintext()
                 .build();
@@ -49,25 +47,24 @@ public class MultiServiceClientGUI extends JFrame {
                 .usePlaintext()
                 .build();
 
-        // 创建存根
         AirConditionerControlServiceGrpc.AirConditionerControlServiceStub airStub = AirConditionerControlServiceGrpc.newStub(airChannel);
         LightControlServiceGrpc.LightControlServiceStub lightStub = LightControlServiceGrpc.newStub(lightChannel);
         ComputerControlServiceGrpc.ComputerControlServiceStub computerStub = ComputerControlServiceGrpc.newStub(computerChannel);
 
-        // 创建按钮和文本框
+        //create button
         JPanel panel = new JPanel(new GridLayout(6, 2, 10, 10));
-        airOnButton = new JButton("开启空调");
-        airOffButton = new JButton("关闭空调");
-        computerOnButton = new JButton("开启电脑");
-        computerOffButton = new JButton("关闭电脑");
-        lightOnButton = new JButton("开启灯光");
-        lightOffButton = new JButton("关闭灯光");
-        lightHighButton = new JButton("高亮度");
-        lightLowButton = new JButton("低亮度");
+        airOnButton = new JButton("Turn on the air conditioner");
+        airOffButton = new JButton("Turn off the air conditioner");
+        computerOnButton = new JButton("Turn on the computer");
+        computerOffButton = new JButton("Turn off the computer");
+        lightOnButton = new JButton("Turn on the light");
+        lightOffButton = new JButton("Turn off the light");
+        lightHighButton = new JButton("High light");
+        lightLowButton = new JButton("low light");
         temperatureField = new JTextField();
-        JButton setAirTemperatureButton = new JButton("设置温度");
+        JButton setAirTemperatureButton = new JButton("set temperature");
 
-        // 添加按钮和文本框到面板
+        //add button
         panel.add(airOnButton);
         panel.add(airOffButton);
         panel.add(computerOnButton);
@@ -79,10 +76,8 @@ public class MultiServiceClientGUI extends JFrame {
         panel.add(temperatureField);
         panel.add(setAirTemperatureButton);
 
-        // 添加面板到窗口
         add(panel);
 
-        // 添加事件监听器
         airOnButton.addActionListener(e -> switchAirConditioner(airStub, true));
         airOffButton.addActionListener(e -> switchAirConditioner(airStub, false));
         computerOnButton.addActionListener(e -> toggleComputers(computerStub, true));
@@ -101,19 +96,16 @@ public class MultiServiceClientGUI extends JFrame {
                 .setTurnOn(turnOn)
                 .build();
         stub.switchAirConditioner(request, new StreamObserver<AirConditionProto.SwitchAirConditionerResponse>() {
-            @Override
             public void onNext(AirConditionProto.SwitchAirConditionerResponse response) {
-                System.out.println("空调响应: " + response.getMessage());
+                System.out.println("Air conditioning response: " + response.getMessage());
             }
 
-            @Override
             public void onError(Throwable t) {
-                System.err.println("空调出错: " + t.getMessage());
+                System.err.println("Air conditioning error:" + t.getMessage());
             }
 
-            @Override
             public void onCompleted() {
-                System.out.println("空调请求完成");
+                System.out.println("Air conditioning request completed");
             }
         });
     }
@@ -123,19 +115,16 @@ public class MultiServiceClientGUI extends JFrame {
                 .setPowerOn(powerOn)
                 .build();
         stub.toggleComputers(request, new StreamObserver<ToggleComputersResponse>() {
-            @Override
             public void onNext(ToggleComputersResponse response) {
-                System.out.println("电脑响应: " + response.getMessage());
+                System.out.println("Computer response:" + response.getMessage());
             }
 
-            @Override
             public void onError(Throwable t) {
-                System.err.println("电脑控制出错: " + t.getMessage());
+                System.err.println("Computer control error: " + t.getMessage());
             }
 
-            @Override
             public void onCompleted() {
-                System.out.println("电脑控制请求完成");
+                System.out.println("Computer control request completed");
             }
         });
     }
@@ -145,19 +134,17 @@ public class MultiServiceClientGUI extends JFrame {
                 .setTurnOn(turnOn)
                 .build();
         stub.switchLight(request, new StreamObserver<SwitchLightResponse>() {
-            @Override
             public void onNext(SwitchLightResponse response) {
-                System.out.println("灯光响应: " + response.getMessage());
+                System.out.println("Light response:" + response.getMessage());
             }
 
-            @Override
+
             public void onError(Throwable t) {
-                System.err.println("灯光出错: " + t.getMessage());
+                System.err.println("Lighting error: " + t.getMessage());
             }
 
-            @Override
             public void onCompleted() {
-                System.out.println("灯光请求完成");
+                System.out.println("Light request completed");
             }
         });
     }
@@ -167,19 +154,16 @@ public class MultiServiceClientGUI extends JFrame {
                 .setLevel(level)
                 .build();
         stub.adjustBrightness(request, new StreamObserver<BrightnessResponse>() {
-            @Override
             public void onNext(BrightnessResponse response) {
-                System.out.println("亮度调整响应: " + response.getMessage());
+                System.out.println("Brightness adjustment response: " + response.getMessage());
             }
 
-            @Override
             public void onError(Throwable t) {
-                System.err.println("亮度调整出错: " + t.getMessage());
+                System.err.println("Brightness adjustment error: " + t.getMessage());
             }
 
-            @Override
             public void onCompleted() {
-                System.out.println("亮度调整请求完成");
+                System.out.println("Brightness adjustment request complete");
             }
         });
     }
@@ -191,23 +175,20 @@ public class MultiServiceClientGUI extends JFrame {
                     .setTemperatureCelsius(temp)
                     .build();
             stub.setTemperature(request, new StreamObserver<AirConditionProto.SetTemperatureResponse>() {
-                @Override
                 public void onNext(AirConditionProto.SetTemperatureResponse response) {
-                    System.out.println("设置温度响应: " + response.getMessage());
+                    System.out.println("Setting temperature response: " + response.getMessage());
                 }
 
-                @Override
                 public void onError(Throwable t) {
-                    System.err.println("设置温度出错: " + t.getMessage());
+                    System.err.println("Error setting temperature:" + t.getMessage());
                 }
 
-                @Override
                 public void onCompleted() {
-                    System.out.println("设置温度请求完成");
+                    System.out.println("The request for setting the temperature is complete");
                 }
             });
         } catch (NumberFormatException e) {
-            System.err.println("温度值无效。请输入有效数字。");
+            System.err.println("The temperature value is invalid. Please enter a valid number.");
         }
     }
 

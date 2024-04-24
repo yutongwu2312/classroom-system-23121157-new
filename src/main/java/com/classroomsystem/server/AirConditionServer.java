@@ -24,11 +24,11 @@ public class AirConditionServer {
     }
 
     public void start(int port) throws IOException {
-        // 设置Consul客户端
+        //Consul Client
         Consul consul = Consul.builder().build();
         consulAgent = consul.agentClient();
 
-        // 服务注册
+        //Register
         ImmutableRegistration service = ImmutableRegistration.builder()
                 .id("airConditionServer-" + port)
                 .name("AirConditionServer")
@@ -42,16 +42,16 @@ public class AirConditionServer {
                 .addService(new AirConditionerControlServiceImpl())
                 .build()
                 .start();
-        System.out.println("服务器已启动，监听端口：" + port);
+        System.out.println("The server is started, listening port:" + port);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.err.println("*** 由于JVM正在关闭，gRPC服务器即将关闭");
+            System.err.println("*** The gRPC server is about to shut down because the JVM is shutting down");
             try {
                 AirConditionServer.this.stop();
             } catch (InterruptedException e) {
                 e.printStackTrace(System.err);
             }
-            System.err.println("*** 服务器已关闭");
+            System.err.println("*** Server shut down");
             consulAgent.deregister("airConditionServer-" + port);
         }));
     }
@@ -69,52 +69,42 @@ public class AirConditionServer {
     }
 
     private static class AirConditionerControlServiceImpl extends AirConditionerControlServiceGrpc.AirConditionerControlServiceImplBase {
-        @Override
         public void switchAirConditioner(AirConditionProto.SwitchAirConditionerRequest request, StreamObserver<AirConditionProto.SwitchAirConditionerResponse> responseObserver) {
             // 实现开关空调的业务逻辑
             boolean status = request.getTurnOn();
             // 模拟业务处理结果
             AirConditionProto.SwitchAirConditionerResponse response = AirConditionProto.SwitchAirConditionerResponse.newBuilder()
-                    .setMessage(status ? "空调已开启" : "空调已关闭")
+                    .setMessage(status ? "air conditioner is on" : "air conditioner is close")
                     .build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         }
 
-        @Override
         public void setTemperature(AirConditionProto.SetTemperatureRequest request, StreamObserver<AirConditionProto.SetTemperatureResponse> responseObserver) {
-            // 实现设置温度的业务逻辑
             float temperature = request.getTemperatureCelsius();
-            // 模拟业务处理结果
             AirConditionProto.SetTemperatureResponse response = AirConditionProto.SetTemperatureResponse.newBuilder()
-                    .setMessage("温度设置为: " + temperature + "°C")
+                    .setMessage("Temperature is set to:" + temperature + "°C")
                     .build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         }
 
-        @Override
         public StreamObserver<AirConditionProto.SetTemperatureRequest> streamTemperatureAdjustments(StreamObserver<AirConditionProto.StreamTemperatureAdjustmentsResponse> responseObserver) {
-            // 实现客户端流式温度调节请求的业务逻辑
             return new StreamObserver<AirConditionProto.SetTemperatureRequest>() {
-                @Override
                 public void onNext(AirConditionProto.SetTemperatureRequest request) {
-                    // 处理每个温度调节请求
+                    // Handle each temperature regulation
                     float temperature = request.getTemperatureCelsius();
-                    System.out.println("接收到温度调节请求: " + temperature + "°C");
+                    System.out.println("Temperature adjustment request received: " + temperature + "°C");
                 }
 
-                @Override
                 public void onError(Throwable t) {
-                    // 处理错误情况
-                    System.err.println("流式调温中发生错误: " + t.getMessage());
+                    // handle error
+                    System.err.println("An error occurred during flow temperature control:" + t.getMessage());
                 }
 
-                @Override
                 public void onCompleted() {
-                    // 处理请求完成的情况
                     AirConditionProto.StreamTemperatureAdjustmentsResponse response = AirConditionProto.StreamTemperatureAdjustmentsResponse.newBuilder()
-                            .setMessage("温度调节完成")
+                            .setMessage("Temperature control complete.")
                             .build();
                     responseObserver.onNext(response);
                     responseObserver.onCompleted();

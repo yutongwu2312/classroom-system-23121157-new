@@ -6,32 +6,25 @@ option java_multiple_files = false;
 option java_package = "com.classroomsystem";
 option java_outer_classname = "ComputerProto";
 
-// 电脑控制服务，提供远程开关机功能
 service ComputerControlService {
-  // 开关机：发送请求远程开关所有电脑
   rpc ToggleComputers(ToggleComputersRequest) returns (ToggleComputersResponse);
-
-  // 服务端流：服务端不断发送当前所有电脑的状态更新
+  // Server Streaming
   rpc MonitorComputers(Empty) returns (stream ComputerStatusResponse) {
-    // 在这个流式响应中，服务端可以持续发送电脑当前状态的更新，客户端可以实时监控状态变化。
   }
 }
 
-// 开关机请求与响应消息
 message ToggleComputersRequest {
-  bool power_on = 1; // true表示开机，false表示关机
+  bool power_on = 1;
 }
 
 message ToggleComputersResponse {
-  bool success = 1; // 表示操作是否成功完成
-  string message = 2; // 如果操作失败，提供有关失败原因的详细信息
+  bool success = 1;
+  string message = 2;
 }
 
-// 空消息，用于不需要参数的RPC调用
 message Empty {}
 
-// 电脑状态响应，用于服务端流
 message ComputerStatusResponse {
-  bool is_on = 1; // 表示电脑是否开启
-  string status_info = 2; // 提供额外的状态信息
+  bool is_on = 1;
+  string status_info = 2;
 }

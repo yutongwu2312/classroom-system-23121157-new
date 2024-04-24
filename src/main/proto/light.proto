@@ -6,48 +6,43 @@ option java_multiple_files = false;
 option java_package = "com.classroomsystem";
 option java_outer_classname = "LightProto";
 
-// 灯光控制服务，包含开关控制和亮度调节功能
 service LightControlService {
-  // 开关控制：发送一个简单的请求来远程开启或关闭灯光
   rpc SwitchLight(SwitchLightRequest) returns (SwitchLightResponse);
-  // 亮度调节：通过请求指定亮度等级（低或高）来改变灯光亮度
   rpc AdjustBrightness(BrightnessRequest) returns (BrightnessResponse);
-
-  // 双向流：客户端和服务端可以交换灯光设置和状态信息
   rpc StreamLightControl(stream LightControlMessage) returns (stream LightControlMessage) {
-    // 在这个双向流中，客户端和服务端可以实时交换关于灯光控制的请求和响应。
+
   }
 }
 
-// 开关灯请求与响应消息
+// switch
 message SwitchLightRequest {
-  bool turn_on = 1; // true表示开启灯光，false表示关闭灯光
+  bool turn_on = 1;
 }
 
 message SwitchLightResponse {
-  bool success = 1; // 表示操作是否成功完成
-  string message = 2; // 如果操作失败，提供有关失败原因的详细信息
+  bool success = 1;
+  string message = 2;
 }
 
-// 亮度调节请求与响应消息
+// Brightness
 message BrightnessRequest {
   enum BrightnessLevel {
-    LOW = 0; // 低亮度等级
-    HIGH = 1; // 高亮度等级
+    LOW = 0;
+    HIGH = 1;
   }
-  BrightnessLevel level = 1; // 请求调整到的亮度等级
+  BrightnessLevel level = 1;
 }
 
 message BrightnessResponse {
-  bool success = 1; // 表示亮度调节操作是否成功完成
-  string message = 2; // 如果操作失败，提供有关失败原因的详细信息
+  bool success = 1;
+  string message = 2;
 }
 
-// 灯光控制消息，用于双向流
+// Light control
 message LightControlMessage {
   oneof control_type {
     SwitchLightRequest switch_request = 1;
     BrightnessRequest brightness_request = 2;
   }
-  string message = 3; // 附加信息，例如操作结果
+  string message = 3;
 }

@@ -5,7 +5,7 @@ import static io.grpc.MethodDescriptor.generateFullMethodName;
 /**
  * <pre>
  * 电脑控制服务，提供远程开关机功能
- * </pre>
+ *
  */
 @javax.annotation.Generated(
     value = "by gRPC proto compiler (version 1.63.0)",

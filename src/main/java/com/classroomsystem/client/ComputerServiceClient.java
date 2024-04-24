@@ -26,38 +26,32 @@ public class ComputerServiceClient {
                 .setPowerOn(powerOn)
                 .build();
         stub.toggleComputers(request, new StreamObserver<ToggleComputersResponse>() {
-            @Override
             public void onNext(ToggleComputersResponse response) {
-                System.out.println("电脑开关响应: " + response.getMessage());
+                System.out.println("Computer switch response: " + response.getMessage());
             }
 
-            @Override
             public void onError(Throwable t) {
-                System.err.println("切换电脑状态时出错: " + t.getMessage());
+                System.err.println("Error while switching computer state: " + t.getMessage());
             }
 
-            @Override
             public void onCompleted() {
-                System.out.println("电脑开关请求完成");
+                System.out.println("Computer switch request completed");
             }
         });
     }
 
     public void monitorComputers() {
         StreamObserver<ComputerStatusResponse> responseObserver = new StreamObserver<ComputerStatusResponse>() {
-            @Override
             public void onNext(ComputerStatusResponse response) {
-                System.out.println("电脑状态: " + (response.getIsOn() ? "开机" : "关机") + ", 信息: " + response.getStatusInfo());
+                System.out.println("Computer Status:" + (response.getIsOn() ? "open" : "close") + ", message: " + response.getStatusInfo());
             }
 
-            @Override
             public void onError(Throwable t) {
-                System.err.println("监视电脑状态时出错: " + t.getMessage());
+                System.err.println("Error monitoring computer status: " + t.getMessage());
             }
 
-            @Override
             public void onCompleted() {
-                System.out.println("电脑监视流结束");
+                System.out.println("computer monitor stream ends");
             }
         };
 
@@ -67,16 +61,15 @@ public class ComputerServiceClient {
     public static void main(String[] args) {
         ComputerServiceClient client = new ComputerServiceClient("localhost", 8081);
 
-        // 切换电脑状态
-        System.out.println("正在开启电脑");
+        //switch computer status
+        System.out.println("Starting the computer");
         client.toggleComputers(true);
 
-        // 监视电脑状态
         client.monitorComputers();
 
-        // 退出
+        //exit
         Scanner scanner = new Scanner(System.in);
-        System.out.println("按 'Q' 退出");
+        System.out.println("press 'Q' exit");
         while (true) {
             String input = scanner.nextLine();
             if (input.equalsIgnoreCase("Q")) {
@@ -90,7 +83,7 @@ public class ComputerServiceClient {
         try {
             channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            System.err.println("关闭客户端时出错: " + e.getMessage());
+            System.err.println("Error while closing client: " + e.getMessage());
         }
     }
 }
