@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class MultiServiceClientGUI extends JFrame {
+public class ClassroomClientGUI extends JFrame {
 
     private static final String SERVER_HOST = "localhost";
     private static final int AIR_CONDITIONER_PORT = 8082;
@@ -32,8 +32,8 @@ public class MultiServiceClientGUI extends JFrame {
     private final ManagedChannel computerChannel;
     private final ManagedChannel lightChannel;
 
-    public MultiServiceClientGUI() {
-        setTitle("Multiservice control");
+    public ClassroomClientGUI() {
+        setTitle("Classroom control");
         setSize(300, 250);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -184,7 +184,7 @@ public class MultiServiceClientGUI extends JFrame {
                 }
 
                 public void onCompleted() {
-                    System.out.println("The request for setting the temperature is complete");
+                    System.out.println("The request for setting the temperature is complete.");
                 }
             });
         } catch (NumberFormatException e) {
@@ -193,6 +193,6 @@ public class MultiServiceClientGUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(MultiServiceClientGUI::new);
+        SwingUtilities.invokeLater(ClassroomClientGUI::new);
     }
 }

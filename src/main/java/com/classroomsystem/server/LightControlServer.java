@@ -47,12 +47,10 @@ public class LightControlServer {
             } catch (InterruptedException e) {
                 e.printStackTrace(System.err);
             } finally {
-                // Deregister service
                 agentClient.deregister(SERVICE_ID);
                 System.out.println("Server shut down and service deregistered");
             }
         }));
-
         server.awaitTermination();
     }
 

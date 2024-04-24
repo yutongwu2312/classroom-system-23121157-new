@@ -47,12 +47,11 @@ public class AirconditionServiceClient {
                 .setTemperatureCelsius(temperatureCelsius)
                 .build();
         stub.setTemperature(request, new StreamObserver<AirConditionProto.SetTemperatureResponse>() {
-            @Override
+
             public void onNext(AirConditionProto.SetTemperatureResponse response) {
                 System.out.println("SetTemperature response: " + response.getMessage());
             }
 
-            @Override
             public void onError(Throwable t) {
                 System.err.println("Error in setTemperature: " + t.getMessage());
             }

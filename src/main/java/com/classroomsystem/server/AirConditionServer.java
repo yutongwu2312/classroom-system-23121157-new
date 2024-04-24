@@ -45,13 +45,13 @@ public class AirConditionServer {
         System.out.println("The server is started, listening port:" + port);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.err.println("*** The gRPC server is about to shut down because the JVM is shutting down");
+            System.err.println(" The gRPC server is about to shut down because the JVM is shutting down");
             try {
                 AirConditionServer.this.stop();
             } catch (InterruptedException e) {
                 e.printStackTrace(System.err);
             }
-            System.err.println("*** Server shut down");
+            System.err.println(" Server shut down");
             consulAgent.deregister("airConditionServer-" + port);
         }));
     }
@@ -70,9 +70,7 @@ public class AirConditionServer {
 
     private static class AirConditionerControlServiceImpl extends AirConditionerControlServiceGrpc.AirConditionerControlServiceImplBase {
         public void switchAirConditioner(AirConditionProto.SwitchAirConditionerRequest request, StreamObserver<AirConditionProto.SwitchAirConditionerResponse> responseObserver) {
-            // 实现开关空调的业务逻辑
             boolean status = request.getTurnOn();
-            // 模拟业务处理结果
             AirConditionProto.SwitchAirConditionerResponse response = AirConditionProto.SwitchAirConditionerResponse.newBuilder()
                     .setMessage(status ? "air conditioner is on" : "air conditioner is close")
                     .build();
