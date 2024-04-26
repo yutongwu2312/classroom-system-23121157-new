@@ -5,7 +5,6 @@ import com.classroomsystem.ComputerProto.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
-
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
