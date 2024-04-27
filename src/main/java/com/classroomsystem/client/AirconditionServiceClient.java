@@ -1,9 +1,7 @@
 package com.classroomsystem.client;
 
-
 import com.classroomsystem.AirConditionProto;
 import com.classroomsystem.AirConditionerControlServiceGrpc;
-
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;
@@ -17,12 +15,15 @@ public class AirconditionServiceClient {
     private final AirConditionerControlServiceGrpc.AirConditionerControlServiceStub stub;
 
     public AirconditionServiceClient(String host, int port) {
+        // creat channel
         this.channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext()
                 .build();
+        // stub
         this.stub = AirConditionerControlServiceGrpc.newStub(channel);
     }
 
+    // open or close airconditioner
     public void switchAirConditioner(boolean turnOn) {
         AirConditionProto.SwitchAirConditionerRequest request = AirConditionProto.SwitchAirConditionerRequest.newBuilder()
                 .setTurnOn(turnOn)
@@ -42,6 +43,7 @@ public class AirconditionServiceClient {
         });
     }
 
+    // set temperature
     public void setTemperature(float temperatureCelsius) {
         AirConditionProto.SetTemperatureRequest request = AirConditionProto.SetTemperatureRequest.newBuilder()
                 .setTemperatureCelsius(temperatureCelsius)
@@ -98,6 +100,7 @@ public class AirconditionServiceClient {
         }
     }
 
+    // close channel
     public void shutdown() {
         try {
             channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
@@ -106,6 +109,7 @@ public class AirconditionServiceClient {
         }
     }
 
+    // main method
     public static void main(String[] args) {
         AirconditionServiceClient client = new AirconditionServiceClient("localhost", 8082);
         client.switchAirConditioner(true);

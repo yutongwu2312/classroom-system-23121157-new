@@ -90,7 +90,7 @@ public class ClassroomClientGUI extends JFrame {
 
         setVisible(true);
     }
-
+// method switchAirConditioner
     private void switchAirConditioner(AirConditionerControlServiceGrpc.AirConditionerControlServiceStub stub, boolean turnOn) {
         AirConditionProto.SwitchAirConditionerRequest request = AirConditionProto.SwitchAirConditionerRequest.newBuilder()
                 .setTurnOn(turnOn)
@@ -109,7 +109,7 @@ public class ClassroomClientGUI extends JFrame {
             }
         });
     }
-
+// method toggleComputers
     private void toggleComputers(ComputerControlServiceGrpc.ComputerControlServiceStub stub, boolean powerOn) {
         ToggleComputersRequest request = ToggleComputersRequest.newBuilder()
                 .setPowerOn(powerOn)
@@ -128,7 +128,7 @@ public class ClassroomClientGUI extends JFrame {
             }
         });
     }
-
+// method switchLight
     private void switchLight(LightControlServiceGrpc.LightControlServiceStub stub, boolean turnOn) {
         SwitchLightRequest request = SwitchLightRequest.newBuilder()
                 .setTurnOn(turnOn)
@@ -167,7 +167,7 @@ public class ClassroomClientGUI extends JFrame {
             }
         });
     }
-
+// method setAirTemperature
     private void setAirTemperature(AirConditionerControlServiceGrpc.AirConditionerControlServiceStub stub, String temperature) {
         try {
             float temp = Float.parseFloat(temperature);
